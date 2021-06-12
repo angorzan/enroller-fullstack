@@ -12,10 +12,10 @@
     </div>
     <div v-else>
     	<button :class="registering ? 'button-outline' : ''" @click="registering = false">Loguję się</button>
-		<button :class="!registering ? 'button-outline' : ''" @click="registering = true">Rejestruję się</button>>
+		<button :class="!registering ? 'button-outline' : ''" @click="registering = true">Rejestruję się</button>
     
       <login-form v-if="!registering" @login="login($event)"></login-form>
-      <login-form v-if="registering" @login="register($event)">button-label="Zarejestruj się"</login-form>
+      <login-form v-if="registering" @login="register($event)" button-label="Zarejestruj się"></login-form>
     </div>
   </div>
 </template>
@@ -37,6 +37,15 @@
             login(user) {
                 this.authenticatedUsername = user.login;
             },
+            register(user) {
+			 this.$http.post('participants', user)
+			     .then(response => {
+			         alert(response.bodyText);
+			     })
+			     .catch(response => {
+			         alert(response.bodyText);    
+			     });
+			},
             logout() {
                 this.authenticatedUsername = '';
             }
