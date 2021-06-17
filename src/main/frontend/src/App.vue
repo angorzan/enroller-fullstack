@@ -75,6 +75,15 @@
             },
             clearMessage() {
                 this.message = undefined;
+            },
+            addNewMeeting() {
+                this.clearMessage();
+                this.$http.post('meetings', meeting)
+                    .then(() => {
+                        this.success('Spotkanie zostało założone. Możesz się na nie zapisać.');
+                        this.registering = false;
+                    })
+                    .catch(response => this.failure('Błąd przy zakładaniu spotkania. Kod odpowiedzi: ' + response.status));
             }
         },
         mounted() {
