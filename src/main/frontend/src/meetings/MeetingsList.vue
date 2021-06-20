@@ -9,12 +9,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for="meeting in meetings" :key="meeting.name">
-      <td>{{ meeting.name }}</td>
+    <tr v-for="meeting in meetings" :key="meeting.title">
+      <td>{{ meeting.title }}</td>
+      <td>{{ meeting.date }}</td>
       <td>{{ meeting.description }}</td>
       <td>
         <ul v-if="meeting.participants">
-          <li v-for="participant in meeting.participants" :key="participant">
+          <li v-for="participant in meeting.participants" :key="participant.login">
             {{ participant }}
           </li>
         </ul>
@@ -36,6 +37,25 @@
 
 <script>
     export default {
-        props: ['meetings', 'username']
+        props: ['meetings', 'username'],
+        methods: {
+            addNewMeeting() {
+                this.error = false;
+                if (this.newMeeting.title) {
+                  this.$http.post('meetings', this.newMeeting)
+                    .then(() => {
+                        this.success('Spotkanie zostało założone. Możesz się na nie zapisać.');
+                        this.registering = false;
+                    })
+                    .catch(response => this.failure('Błąd przy zakładaniu spotkania. Kod odpowiedzi: ' + response.status));
+                    this.$emit('added', this.newMeeting);
+                    this.newMeeting = {participants: []};
+                    this.adding = false;
+                } else {
+                    this.error = true;
+                }
+            }
+        }
     }
+    
 </script>

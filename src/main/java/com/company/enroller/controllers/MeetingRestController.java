@@ -67,7 +67,9 @@ public class MeetingRestController {
     // POST http://localhost:8080/meetings
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> addParticipantToMeeting(@PathVariable("id") long id,
-            @RequestBody Participant participant) {
+    	@RequestBody Participant participant) {
+    	//System.out.println("HERE4");
+    	//System.out.println(participant.getLogin());
         Meeting meeting = meetingService.findById(id);
         if (meeting == null) {
             return new ResponseEntity<String>("Unable to add participant to meeting that does not exist",
